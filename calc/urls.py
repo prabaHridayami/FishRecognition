@@ -5,6 +5,10 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('',views.home, name='home'),
+    path('admin',views.admin, name='admin'),
+    path('datatables',views.datatables, name='datatables'),
+    path('elements',views.elements, name='elements'),
+    path('datasets',views.datasets, name='datasets'),
     path('showcase',views.showcase, name='showcase'),
 
     path('add',views.add, name='add'),

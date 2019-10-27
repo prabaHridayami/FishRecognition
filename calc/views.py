@@ -11,6 +11,18 @@ import math
 def home(request):
     return render(request,'home.html')
 
+def admin(request):
+    return render(request,'admin.html')
+
+def datatables(request):
+    return render(request,'datatables.html')
+
+def elements(request):
+    return render(request,'elements.html')
+
+def datasets(request):
+    return render(request,'datasets.html')
+
 def add(request):
 
     val1=int(request.POST['num1'])
