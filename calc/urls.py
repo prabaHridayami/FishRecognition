@@ -1,11 +1,17 @@
-from django.urls import path
+from django.urls import path, include
 from  . import views
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+router.register('/histories',views.HistoriesView),
+router.register('/fishes',views.FishesView)
 
 urlpatterns = [
+    path('api', include(router.urls)),
     path('',views.home, name='home'),
-    path('admin',views.admin, name='admin'),
+    path('admindash',views.admindash, name='admindash'),
     path('datatables',views.datatables, name='datatables'),
     path('elements',views.elements, name='elements'),
     path('datasets',views.datasets, name='datasets'),

@@ -5,13 +5,18 @@ from keras.models import load_model
 import numpy as np
 from keras.preprocessing import image
 import math
+import cv2 as cv
+
+from rest_framework import viewsets
+from .models import Histories, Fishes
+from .serializers import HistoriesSerializer, FishesSerializer
 
 # Create your views here.
 
 def home(request):
     return render(request,'home.html')
 
-def admin(request):
+def admindash(request):
     return render(request,'admin.html')
 
 def datatables(request):
@@ -41,6 +46,9 @@ def upload(request):
         fs.save(uploaded_file.name,uploaded_file)
     
     return render(request,'showcase.html',{'name':uploaded_file.name, 'size':uploaded_file.size})
+
+# def segmentation(request):
+    
 
 def tes(request):
     if request.method == 'POST':
@@ -114,8 +122,6 @@ def tes(request):
     hasil = ''
     species = ''
     percentage = ''
-    fix_nama = ''
-    fix_hasil = ''
 
     for i in range(len(classes)):
         if result[0][i] * 100 > k:
@@ -133,3 +139,11 @@ def tes(request):
         return render(request,'showcase.html',{'result':'unknown','img':url,'species':'unknown','percentage':0})
     else:
         return render(request,'showcase.html',{'result':hasil,'img':url,'species':species,'percentage':percentage})
+
+class HistoriesView(viewsets.ModelViewSet):
+    queryset = Histories.objects.all()
+    serializer_class = HistoriesSerializer
+
+class FishesView(viewsets.ModelViewSet):
+    queryset = Fishes.objects.all()
+    serializer_class = FishesSerializer
