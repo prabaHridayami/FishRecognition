@@ -5,8 +5,8 @@ from django.conf.urls.static import static
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register('/histories',views.HistoriesView),
-router.register('/fishes',views.FishesView)
+# router.register('/histories',views.HistoriesView),
+# router.register('/fishes',views.FishesView)
 
 urlpatterns = [
     path('api', include(router.urls)),
@@ -18,7 +18,8 @@ urlpatterns = [
     path('showcase',views.showcase, name='showcase'),
 
     path('add',views.add, name='add'),
-    path('tes',views.tes,name='tes'),
+    # path('tes',views.tes,name='tes'),
+    path('coba',views.coba,name='coba'),
     path('upload',views.upload,name='upload')
 ]
 

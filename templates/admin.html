@@ -2,112 +2,42 @@
 
 {% block cotent%}
 <!-- START NAV -->
-<nav class="navbar columns is-fixed-top" role="navigation" aria-label="main navigation" id="app-header">
-    <div class="navbar-brand column is-2 is-paddingless">
-        <a class="navbar-item" href="index.html">
-            ADMIN
-        </a>
-        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="touchMenu">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-        </a>
-    </div>
-
-    <div id="touchMenu">
-
-    </div>
-
-    <div id="navMenu" class="navbar-menu column is-hidden-touch">
-        <!-- <div class="navbar-end">
-        <div class="navbar-item">
-            <a class="button is-white" onclick="Auth.logout()">
-                <span class="icon">
-                    <i class="fa fa-bell"></i>
-                </span>
-            </a>
-        </div>
-        <div class="navbar-item">
-            <a class="button is-white" onclick="Auth.logout()">
-                <span class="icon">
-                    <i class="fa fa-sign-out"></i>
-                </span>
-            </a>
-        </div>
-    </div> -->
-        <div class="navbar-end">
-            <div class="navbar-item">
-                <a class="button is-white" onclick="Auth.logout()">
-                    <span class="icon">
-                        <i class="fa fa-lg fa-bell"></i>
-                    </span>
-                </a>
-            </div>
-            <div class="navbar-item">
-                <a class="button is-white" onclick="Auth.logout()">
-                    <span class="icon">
-                        <i class="fa fa-lg fa-power-off"></i>
-                    </span>
-                </a>
-            </div>
-            <div class="navbar-item has-dropdown">
-                <a class="navbar-link">
-                    <figure class="image avatar is-32x32">
-                        <img class="is-rounded" src="images/user1.png">
-                    </figure>
-                    &nbsp; Hi, nafplann
-                </a>
-                <div class="navbar-dropdown is-right">
-                    <a class="navbar-item">
-                        Overview
-                    </a>
-                    <a class="navbar-item">
-                        Elements
-                    </a>
-                    <a class="navbar-item">
-                        Components
-                    </a>
-                    <hr class="navbar-divider">
-                    <div class="navbar-item">
-                        Version 0.7.1
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</nav> <!-- END NAV -->
 
 <div class="columns" id="app-content">
     <div class="column is-2 is-fullheight is-hidden-touch" id="navigation">
         <aside class="menu">
-            <p class="menu-label is-hidden-touch">
-                General
-            </p>
+            <br>
             <ul class="menu-list">
                 <li>
+                    <a class="has-text-white is-size-4" href="admin">
+                        <span class="icon has-text-white">
+                        </span> ADMIN
+                    </a>
+                </li>
+                <li>
                     <a class="is-active" href="admin">
-                        <span class="icon">
+                        <span class="icon has-text-white">
                             <i class="fa fa-home"></i>
                         </span> Dashboard
                     </a>
                 </li>
                 <li>
-                    <a class="" href="datasets">
-                        <span class="icon">
+                    <a class="has-text-white" href="datasets">
+                        <span class="icon has-text-white">
                             <i class="fa fa-edit"></i>
                         </span> Dataset
                     </a>
                 </li>
                 <li>
-                    <a class="" href="elements">
-                        <span class="icon">
+                    <a class="has-text-white" href="elements">
+                        <span class="icon has-text-white">
                             <i class="fa fa-desktop"></i>
                         </span> Training
                     </a>
                 </li>
                 <li>
-                    <a class="" href="datatables">
-                        <span class="icon">
+                    <a class="has-text-white" href="datatables">
+                        <span class="icon has-text-white">
                             <i class="fa fa-table"></i>
                         </span> Testing
                     </a>
@@ -134,7 +64,7 @@
             <span class="separator"></span>
             <nav class="breadcrumb has-bullet-separator" aria-label="breadcrumbs">
                 <ul>
-                    <li><a href="#">General</a></li>
+                    <li><a href="admin">Admin</a></li>
                     <li class="is-active"><a href="#" aria-current="page">Dashboard</a></li>
                 </ul>
             </nav>
@@ -143,54 +73,46 @@
         <div class="content-body">
             <div class="columns">
                 <div class="column">
-                    <div class="box quick-stats has-background-primary has-text-white">
+                    <div class="box quick-stats has-background-white has-text-white">
                         <div class="quick-stats-icon">
-                            <span class="icon is-large">
-                                <i class="fa fa-3x fa-users"></i>
+                            <span class="icon has-text-info is-large">
+                                <i class="fal fa-fish fa-3x"></i>
                             </span>
                         </div>
-                        <div class="quick-stats-content">
-                            <h3 class="title is-4">Users</h3>
-                            <div class="inlinesparkline-bar"></div>
+                        <div class="column">
+                            <div id="img-preview" class="column is-full"
+                                style=" margin:auto; height:110px; border: 2px dashed #000;">
+                                <h2 id="inputText">Image Here...</h2>
+                                <img id="inputImage" src="/media/1.png" name="inputImage"
+                                    style=" margin:auto; display:none;" />
+                            </div>
+                            <br>
+                            <form action="coba" method="post" enctype="multipart/form-data">
+                                {%csrf_token%}
+                                <div class="columns is-centered">
+                                    <label for="imgInp" class="button is-rounded"><i class="fas fa-upload"></i>Upload
+                                        Image</label>
+                                    <input id="imgInp" type="file" name="photo" style="display: none;">
+                                    <pre style="background: white;"></pre>
+                                    <label for="submit" class="button is-rounded"><i
+                                            class="far fa-poll"></i>Submit</label>
+                                    <input id="submit" type="submit" name="submit" style="display: none;">
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-                <div class="column">
-                    <div class="box quick-stats has-background-info has-text-white">
+                <div class="column is-fullheight">
+                    <div style="height:100%" class="box quick-stats has-background-white">
                         <div class="quick-stats-icon">
                             <span class="icon is-large">
-                                <i class="fa fa-3x fa-server"></i>
+                                <i class="far fa-poll-h fa-3x"></i>
                             </span>
                         </div>
-                        <div class="quick-stats-content">
-                            <h3 class="title is-4">Server</h3>
-                            <div class="inlinesparkline-bar"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="box quick-stats has-background-danger has-text-white">
-                        <div class="quick-stats-icon">
-                            <span class="icon is-large">
-                                <i class="fa fa-3x fa-bar-chart"></i>
-                            </span>
-                        </div>
-                        <div class="quick-stats-content">
-                            <h3 class="title is-4">Revenue</h3>
-                            <div class="inlinesparkline-line"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="box quick-stats has-background-warning has-text-white">
-                        <div class="quick-stats-icon">
-                            <span class="icon is-large">
-                                <i class="fa fa-3x fa-bell"></i>
-                            </span>
-                        </div>
-                        <div class="quick-stats-content">
-                            <h3 class="title is-4">Alert</h3>
-                            <div class="inlinesparkline-line"></div>
+                        <div class="column is-multiline">
+                            <h4 class="title is-4 has-text-black">Result</h4>
+                            <h4 class="title is-6 has-text-black">Result</h4>
+                            <progress class="progress" value="30" max="100"></progress>
                         </div>
                     </div>
                 </div>
@@ -200,7 +122,7 @@
                 <div class="column">
                     <div class="card">
                         <div class="card-content">
-                            <p class="title is-4">Visits</p>
+                            <p class="title is-4">Raw Image</p>
                             <canvas id="chart1"></canvas>
                         </div>
                     </div>
@@ -208,7 +130,15 @@
                 <div class="column">
                     <div class="card">
                         <div class="card-content">
-                            <p class="title is-4">Conversion</p>
+                            <p class="title is-4">Cropped Image</p>
+                            <canvas id="chart2"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="card">
+                        <div class="card-content">
+                            <p class="title is-4">Clean Image</p>
                             <canvas id="chart2"></canvas>
                         </div>
                     </div>
