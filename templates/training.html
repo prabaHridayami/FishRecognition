@@ -22,14 +22,14 @@
                     </a>
                 </li>
                 <li>
-                    <a class="is-active" href="datasets">
+                    <a class="has-text-white" href="datasets">
                         <span class="icon has-text-white">
                             <i class="fa fa-edit"></i>
                         </span> Dataset
                     </a>
                 </li>
                 <li>
-                    <a class="has-text-white" href="training">
+                    <a class="is-active" href="training">
                         <span class="icon has-text-white">
                             <i class="fa fa-desktop"></i>
                         </span> Training
@@ -66,7 +66,7 @@
             <nav class="breadcrumb has-bullet-separator" aria-label="breadcrumbs">
                 <ul>
                     <li><a href="admin">Admin</a></li>
-                    <li class="is-active"><a href="#" aria-current="page">Dataset</a></li>
+                    <li class="is-active"><a href="#" aria-current="page">Training</a></li>
                 </ul>
             </nav>
         </div>
@@ -74,7 +74,7 @@
         <div class="content-body">
             <form action="coba" method="post" enctype="multipart/form-data">
                 {%csrf_token%}
-                <div class="columns">
+                <div class="columns is-centered" style="margin-top: 50px;">
                     <div class="column is-half" style="margin-bottom: 30px;">
                         <div class="box quick-stats has-background-white has-text-white">
                             <div class="quick-stats-icon">
@@ -82,58 +82,51 @@
                                     <i class="fal fa-fish fa-3x"></i>
                                 </span>
                             </div>
-                            <div class="column">
-                                <div id="img-preview" class="column is-full"
-                                    style=" margin:auto; height:110px; border: 2px dashed #000;">
-                                    <h2 id="inputText">Image Here...</h2>
-                                    <img id="inputImage" src="/media/1.png" name="inputImage"
-                                        style=" margin:auto; display:none;" />
+                            <div class="column is-multiline">
+                                <h4 class="title is-4 has-text-black">Nama Model</h4>
+                                <div class="field">
+                                    <div class="control">
+                                        <input class="input is-info" type="text" placeholder="Model name">
+                                    </div>
                                 </div>
                                 <br>
-                                <div class="columns is-centered">
-                                    <label for="imgInp" class="button is-rounded"><i class="fas fa-upload"></i>Upload
-                                        Image</label>
-                                    <input id="imgInp" type="file" name="photo" style="display: none;">
-                                    <pre style="background: white;"></pre>
-                                    <label for="submit" class="button is-rounded"><i
-                                            class="far fa-poll"></i>Submit</label>
-                                    <input id="submit" type="submit" name="submit" style="display: none;">
+                                <h4 class="title is-4 has-text-black">Pilih Folder Dataset</h4>
+                                <div class="columns">
+                                    <div class="column field">
+                                        <div class="file is-info has-name">
+                                            <label class="file-label">
+                                                <input class="file-input" type="file" name="resume">
+                                                <span class="file-cta">
+                                                    <span class="file-icon">
+                                                        <i class="fa fa-upload"></i>
+                                                    </span>
+                                                    <span class="file-label">
+                                                        Choose...
+                                                    </span>
+                                                </span>
+                                                <span class="file-name">
+                                                    Screen Shot 2017-07-29 at 15.54.25.png
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="column">
+                                        <label for="submit" class="button is-rounded is-info">Submit</label>
+                                        <input id="submit" type="submit" name="submit" style="display: none;">
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </form>
-
-            <div class="columns">
-                <div class="column">
-                    <div class="card">
-                        <div class="card-content">
-                            <p class="title is-4">RGB Image</p>
-                            <canvas id="chart1"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="card">
-                        <div class="card-content">
-                            <p class="title is-4">Canny Image</p>
-                            <canvas id="chart2"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="card">
-                        <div class="card-content">
-                            <p class="title is-4">Blending Image</p>
-                            <canvas id="chart2"></canvas>
-                        </div>
-                    </div>
+            <div class="columns is-centered">
+                <div class="column is-half notification is-primary has-text-centered">
+                    <button class="delete"></button>
+                    Status Training
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 

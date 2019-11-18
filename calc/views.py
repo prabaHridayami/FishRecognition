@@ -25,8 +25,8 @@ def admindash(request):
 def datatables(request):
     return render(request,'datatables.html')
 
-def elements(request):
-    return render(request,'elements.html')
+def training(request):
+    return render(request,'training.html')
 
 def datasets(request):
     return render(request,'datasets.html')
@@ -272,10 +272,10 @@ def tes(url):
     else:
         return (species,percentage)
 
-class HistoriesView(viewsets.ModelViewSet):
-    queryset = Histories.objects.all()
-    serializer_class = HistoriesSerializer
+# class HistoriesView(viewsets.ModelViewSet):
+#     queryset = Histories.objects.all()
+#     serializer_class = HistoriesSerializer
 
-class FishesView(viewsets.ModelViewSet):
-    queryset = Fishes.objects.all()
-    serializer_class = FishesSerializer
+# class FishesView(viewsets.ModelViewSet):
+#     queryset = Fishes.objects.all()
+#     serializer_class = FishesSerializer

@@ -13,7 +13,7 @@ urlpatterns = [
     path('',views.home, name='home'),
     path('admindash',views.admindash, name='admindash'),
     path('datatables',views.datatables, name='datatables'),
-    path('elements',views.elements, name='elements'),
+    path('training',views.training, name='training'),
     path('datasets',views.datasets, name='datasets'),
     path('showcase',views.showcase, name='showcase'),
 
