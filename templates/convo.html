@@ -1,0 +1,135 @@
+{% extends 'adminbase.html' %}
+
+{% block cotent%}
+<!-- START NAV -->
+
+<div class="columns" id="app-content">
+    <div class="column is-2 is-fullheight is-hidden-touch" id="navigation">
+        <aside class="menu">
+            <br>
+            <ul class="menu-list">
+                <li>
+                    <a class="has-text-white is-size-4" href="admin">
+                        <span class="icon has-text-white">
+                        </span> ADMIN
+                    </a>
+                </li>
+                <li>
+                    <a class="is-active" href="admindash">
+                        <span class="icon has-text-white">
+                            <i class="fa fa-home"></i>
+                        </span> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a class="has-text-white" href="datasets">
+                        <span class="icon has-text-white">
+                            <i class="fa fa-edit"></i>
+                        </span> Dataset
+                    </a>
+                </li>
+                <li>
+                    <a class="has-text-white" href="training">
+                        <span class="icon has-text-white">
+                            <i class="fa fa-desktop"></i>
+                        </span> Training
+                    </a>
+                </li>
+                <li>
+                    <a class="has-text-white" href="setting">
+                        <span class="icon has-text-white">
+                            <i class="fas fa-cog"></i>
+                        </span> Setting
+                    </a>
+                </li>
+            </ul>
+
+            <p class="menu-label is-hidden-touch">
+                Action
+            </p>
+            <ul class="menu-list">
+                <li>
+                    <a class="" href="login.html">
+                        <span class="icon">
+                            <i class="fa fa-user"></i>
+                        </span> Profile
+                    </a>
+                </li>
+                <li>
+                    <a class="" href="login.html">
+                        <span class="icon">
+                            <i class="fa fa-lock"></i>
+                        </span> Logout
+                    </a>
+                </li>
+            </ul>
+        </aside>
+    </div>
+    <div class="column is-10" id="page-content">
+
+        <div class="content-header">
+            <h4 class="title is-4">Dashboard</h4>
+            <span class="separator"></span>
+            <nav class="breadcrumb has-bullet-separator" aria-label="breadcrumbs">
+                <ul>
+                    <li><a href="admin">Admin</a></li>
+                    <li><a href="#" aria-current="page">Dashboard</a></li>
+                    <li class="is-active"><a href="#" aria-current="page">Convolutional</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="columns">
+            <div class="column is-1">
+                <h5>Layer&nbsp;&nbsp;&nbsp;&nbsp;:</h5>
+            </div>
+            <div>
+                <div class="select is-small">
+                    <select id="layer" onchange="convoLayer()">
+                        <option selected="selected" disabled>Select dropdown</option>
+                        <option value="input_2">Input</option>
+                        <option value="block1_conv1">Block1_Conv1</option>
+                        <option value="block1_conv2">Block1_Conv2</option>
+                        <option value="block1_pool">Block1_Pool</option>
+                        <option value="block2_conv1">Block2_Conv1</option>
+                        <option value="block2_conv2">Block2_Conv2</option>
+                        <option value="block2_pool">Block2_Pool</option>
+                        <option value="block3_conv1">Block3_Conv1</option>
+                        <option value="block3_conv2">Block3_Conv2</option>
+                        <option value="block3_conv3">Block3_Conv3</option>
+                        <option value="block3_pool">Block3_Pool</option>
+                        <option value="block4_conv1">Block4_Conv1</option>
+                        <option value="block4_conv2">Block4_Conv2</option>
+                        <option value="block4_conv3">Block4_Conv3</option>
+                        <option value="block4_pool">Block4_Pool</option>
+                        <option value="block5_conv1">Block5_Conv1</option>
+
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <p class="title is-4">Convolutional&nbsp;&nbsp;:</p>
+                <p class="title is-4" id="convo_title"></p>
+                <img id="convo_layer" src="" alt="">
+            </div>
+        </div>
+    </div>
+</div>
+    <script src="static/css/app.css"></script>
+    <script>
+        function convoLayer() {
+            var selectedLayer = $("#layer").val;
+            var url = '/media/convo/'+selectedLayer+'.png';
+            $("#convo_layer").attr('src', url);
+        }
+
+        $("#layer") .change(function () {    
+            var selectedLayer = $("#layer").val();
+            var url = '/media/convo/'+selectedLayer+'.png';
+            $("#convo_title").text(selectedLayer)
+            $("#convo_layer").attr('src', url);
+            console.log('convo_layer',url);
+        }); 
+    </script>
+{% endblock %}

@@ -1,0 +1,284 @@
+{% extends 'adminbase.html' %}
+
+{% block cotent%}
+<!-- START NAV -->
+
+<div class="columns" id="app-content">
+    <div class="column is-2 is-fullheight is-hidden-touch" id="navigation">
+        <aside class="menu">
+            <br>
+            <ul class="menu-list">
+                <li>
+                    <a class="has-text-white is-size-4" href="admin">
+                        <span class="icon has-text-white">
+                        </span> ADMIN
+                    </a>
+                </li>
+                <li>
+                    <a class="is-active" href="admindash">
+                        <span class="icon has-text-white">
+                            <i class="fa fa-home"></i>
+                        </span> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a class="has-text-white" href="datasets">
+                        <span class="icon has-text-white">
+                            <i class="fa fa-edit"></i>
+                        </span> Dataset
+                    </a>
+                </li>
+                <li>
+                    <a class="has-text-white" href="training">
+                        <span class="icon has-text-white">
+                            <i class="fa fa-desktop"></i>
+                        </span> Training
+                    </a>
+                </li>
+                <li>
+                    <a class="has-text-white" href="setting">
+                        <span class="icon has-text-white">
+                            <i class="fas fa-cog"></i>
+                        </span> Setting
+                    </a>
+                </li>
+            </ul>
+
+            <p class="menu-label is-hidden-touch">
+                Action
+            </p>
+            <ul class="menu-list">
+                <li>
+                    <a class="" href="login.html">
+                        <span class="icon">
+                            <i class="fa fa-user"></i>
+                        </span> Profile
+                    </a>
+                </li>
+                <li>
+                    <a class="" href="login.html">
+                        <span class="icon">
+                            <i class="fa fa-lock"></i>
+                        </span> Logout
+                    </a>
+                </li>
+            </ul>
+        </aside>
+    </div>
+    <div class="column is-10" id="page-content">
+
+        <div class="content-header">
+            <h4 class="title is-4">Dashboard</h4>
+            <span class="separator"></span>
+            <nav class="breadcrumb has-bullet-separator" aria-label="breadcrumbs">
+                <ul>
+                    <li><a href="admin">Admin</a></li>
+                    <li><a href="#" aria-current="page">Dashboard</a></li>
+                    <li class="is-active"><a href="#" aria-current="page">Preprocessing</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="columns">
+            <div class="column">
+                <div class="card">
+                    <div class="card-content">
+                        <p class="title is-4">1. Raw Image</p>
+                        <img src="{{fishinput}}" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="card">
+                    <div class="card-content">
+                        <p class="title is-4">2. Cropped Image</p>
+                        <img src="{{cropped}}" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="card">
+                    <div class="card-content">
+                        <p class="title is-4">3. Remove Background</p>
+                        <img src="{{removebg}}" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="columns">
+            <div class="column">
+                <div class="card">
+                    <div class="card-content">
+                        <p class="title is-4">4. Transparent Background</p>
+                        <img src="{{transparentbg}}" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="card">
+                    <div class="card-content">
+                        <p class="title is-4">5. Resize Image</p>
+                        <img src="{{resize}}" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="card">
+                    <div class="card-content">
+                        <p class="title is-4">6. Final Image</p>
+                        <img src="{{fishoutput}}" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <script src="static/css/app.css"></script>
+    <script>
+        $(document).ready(function () {
+            let bar = {
+                type: 'bar',
+                height: 40,
+                barWidth: 4,
+                barColor: '#fff',
+                barSpacing: 3
+            };
+
+            let line = {
+                type: 'line',
+                width: 150, //73
+                height: 36,
+                lineColor: '#fff',
+                fillColor: 'rgba(0,0,0,0)',
+                lineWidth: 2,
+                maxSpotColor: 'rgba(255,255,255,0.4)',
+                minSpotColor: 'rgba(255,255,255,0.4)',
+                spotColor: 'rgba(255,255,255,0.4)',
+                spotRadius: 3,
+                highlightSpotColor: '#fff',
+                highlightLineColor: 'rgba(255,255,255,0.4)'
+            };
+            // $(item).find('.sparkline-bar-stats').sparkline('html', chart === 'bar' ? bar : line);
+
+            function data() {
+                return Array.from({
+                    length: 22
+                }, () => Math.floor(Math.random() * 40));
+            }
+
+            $('.inlinesparkline-bar').each(function () {
+                $(this).sparkline(data(), bar);
+            });
+
+            $('.inlinesparkline-line').each(function () {
+                $(this).sparkline(data(), line);
+            });
+
+            var ctx1 = document.getElementById('chart2').getContext('2d');
+            window.myBar = new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    "labels": ["January", "February", "March", "April", "May", "June", "July"],
+                    "datasets": [{
+                        "label": "Dataset 1",
+                        "backgroundColor": "rgb(255, 99, 132)",
+                        "stack": "Stack 0",
+                        "data": [-49, -7, -21, 23, 76, -29, 0]
+                    }, {
+                        "label": "Dataset 2",
+                        "backgroundColor": "rgb(54, 162, 235)",
+                        "stack": "Stack 0",
+                        "data": [25, -77, -35, -77, -81, 2, 54]
+                    }, {
+                        "label": "Dataset 3",
+                        "backgroundColor": "rgb(75, 192, 192)",
+                        "stack": "Stack 1",
+                        "data": [43, -6, -98, -22, 24, -51, 6]
+                    }]
+                },
+                options: {
+                    title: {
+                        display: false,
+                    },
+                    tooltips: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    responsive: true,
+                    scales: {
+                        xAxes: [{
+                            stacked: true,
+                        }],
+                        yAxes: [{
+                            stacked: true
+                        }]
+                    },
+                    legend: {
+                        display: false
+                    },
+                }
+            });
+
+            var ctx2 = document.getElementById('chart1').getContext('2d');
+            window.myLine = new Chart(ctx2, {
+                type: 'line',
+                data: {
+                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"],
+                    datasets: [{
+                        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        data: [-60.21, 67.03, -66.63, 97.27, -39.65, 6.71, 6.14, 98.68],
+                        label: 'Dataset',
+                        fill: 'start'
+                    }]
+                },
+                options: {
+                    title: {
+                        display: false
+                    },
+                    legend: {
+                        display: false
+                    },
+                }
+            });
+        });
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-89250524-7"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-89250524-7');
+    </script>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({
+            google_ad_client: "ca-pub-7864475889913507",
+            enable_page_level_ads: true
+        });
+    </script>
+
+    <script
+        type=application/ld+json>{"@context":"http://schema.org","@type":"WebSite","url":"https://www.nafplann.com/","name":"Abdul
+        Manaaf | Fullstack Web Developer","author":"Abdul
+        Manaaf","image":"https://avatars3.githubusercontent.com/u/7114259?s=460&v=4","description":"Abdul Manaaf is a
+        Fullstack Web Developer from
+        Indonesia","sameAs":["https://www.facebook.com/nafplann","https://instagram.com/nafplann","https://twitter.com/nafplann","https://id.linkedin.com/in/nafplann","https://github.com/nafplann"]}
+        </script> <script
+        type=application/ld+json>{"@context":"http://schema.org","@type":"Person","email":"mailto:nafplann@gmail.com","image":"https://avatars3.githubusercontent.com/u/7114259?s=460&v=4","jobTitle":"Fullstack
+        Web Developer","name":"Abdul
+        Manaaf","url":"https://www.nafplann.com/","sameAs":["https://www.facebook.com/nafplann","https://instagram.com/nafplann","https://twitter.com/nafplann","https://id.linkedin.com/in/nafplann","https://github.com/nafplann"]}
+        </script> <script type=application/ld+json>{ "@context" : "http://schema.org" , "@type" : "BreadcrumbList"
+        , "itemListElement" : [{ "@type" : "ListItem" , "position" : 1, "item" : { "@id" : "https://nafplann.com/"
+        , "name" : "Home" , "image" : "https://avatars3.githubusercontent.com/u/7114259?s=460&v=4" } }, { "@type"
+        : "ListItem" , "position" : 2, "item" : { "@id" : "https://nafplann.com/bulma-admin/" , "name"
+        : "free-bulma-admin-dashboard-template" , "image" : "https://avatars3.githubusercontent.com/u/7114259?s=460&v=4"
+        } } }] } </script> {% endblock %}

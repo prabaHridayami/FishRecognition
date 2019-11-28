@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.core.files.storage import FileSystemStorage
-from keras.models import load_model
+from keras.models import *
+from keras.applications import *
 import numpy as np
 from keras.preprocessing import image
 import math
@@ -10,7 +11,7 @@ from PIL import Image
 from matplotlib import pyplot as plt 
 
 from rest_framework import viewsets
-from .models import Histories, Fishes
+from .models import Histories, Fishes, Datasets
 from .serializers import HistoriesSerializer, FishesSerializer
 
 # Create your views here.
@@ -22,14 +23,14 @@ def home(request):
 def admindash(request):
     return render(request,'admin.html')
 
-def datatables(request):
-    return render(request,'datatables.html')
-
 def training(request):
     return render(request,'training.html')
 
 def datasets(request):
     return render(request,'datasets.html')
+    
+def setting(request):
+    return render(request,'setting.html')
 
 def add(request):
 
@@ -67,7 +68,7 @@ def objectDetection(url, name):
     # tagged = cv2.rectangle(img.copy(), (x1-10,y1-10), (x2+10,y2+10), (0,255,0), 3, cv2.LINE_AA)
     # cv2.imshow("canny", canny)
     # cv2.imshow("tagged", tagged)
-    url = "D:/fishrecognition/fishrecognition/media/bgremove/"+name
+    url = "D:/fishrecognition/fishrecognition/media/cropped/"+name
     cv2.imwrite(url, cropped)
 
     return url
@@ -89,7 +90,7 @@ def bgRemover(url,name):
     mask2 = np.where((mask == 2)|(mask == 0), 0, 1).astype('uint8') 
     
     image = image * mask2[:, :, np.newaxis] 
-    url = "D:/fishrecognition/fishrecognition/media/cropped/"+name
+    url = "D:/fishrecognition/fishrecognition/media/bgremove/"+name
     cv2.imwrite(url, image)
 
     return url
@@ -135,7 +136,7 @@ def resizeImage(url,name):
     return url
     
 
-def finalImage(url,name):
+def finalImage(url,raw_name):
         
     # open the image 
     Image1 = Image.open('D:/fishrecognition/fishrecognition/media/auth/bg.png') 
@@ -159,7 +160,7 @@ def finalImage(url,name):
     Image1copy.paste(Image2copy, (int(x/2),int(y/2))) 
     
     # save the image  
-    url ="D:/fishrecognition/fishrecognition/media/final/"+name+".png"
+    url ="D:/fishrecognition/fishrecognition/media/final/"+raw_name+".png"
     Image1copy.save(url) 
     
     return url
@@ -180,14 +181,107 @@ def coba(request):
     removeBg = bgRemover(prepros,name)
     transparentBg = bgTransparent(removeBg,raw_name)
     imgResize = resizeImage(transparentBg,raw_name)
-    newGambar = finalImage(imgResize,name)
+    newGambar = finalImage(imgResize,raw_name)
     result = tes(newGambar)
 
-    post = Histories(fishinput=img_path_raw,fishoutput=newGambar,species=result[0],result=result[1])
+    post = Histories(fishinput=url,fishoutput=newGambar,species=result[0],result=result[1])
     post.save()
 
-    return render(request,'showcase.html',{'result':result,'img':img_path_raw,'species':result[0],'percentage':result[1]})
-    
+    return render(request,'showcase.html',{'result':result,'img':url,'species':result[0],'percentage':result[1]})
+
+def admintes(request):
+    if request.method == 'POST':
+        uploaded_file = request.FILES['photo']
+        fs = FileSystemStorage()
+        
+        name = fs.save(uploaded_file.name,uploaded_file)
+        print(name)
+        raw_name = name.split('.')
+        raw_name = raw_name[0]
+        url = fs.url(name)
+        img_path_raw="D:/fishrecognition/fishrecognition"+ str(url)
+
+    prepros = objectDetection(img_path_raw,name)
+    removeBg = bgRemover(prepros,name)
+    transparentBg = bgTransparent(removeBg,raw_name)
+    imgResize = resizeImage(transparentBg,raw_name)
+    newGambar = finalImage(imgResize,raw_name)
+    result = tes(newGambar)
+    hasil = result[0]+" : "+str(result[1])+"%"
+    url_cropped = '/media/cropped/'+name
+    url_removebg = '/media/bgremove/'+name
+    url_transparentbg = '/media/bgTransparent/'+raw_name+'.png'
+    url_resize = '/media/resizeImage/'+raw_name+'.png'
+    url_final = '/media/final/'+raw_name+'.png'
+
+
+    post = Histories(fishinput=url,cropped=url_cropped,removebg=url_removebg, transparentbg=url_transparentbg,resize=url_resize, fishoutput=url_final,species=result[0],result=result[1])
+    post.save()
+
+    return render(request,'admin.html',{'hasil':hasil,'img':url,'species':result[0],'percentage':result[1],'cropped':url_cropped,'final':newGambar})
+
+
+def dataset(request):
+    if request.method == 'POST':
+        uploaded_file = request.FILES['photo']
+        fs = FileSystemStorage()
+        
+        name = fs.save(uploaded_file.name,uploaded_file)
+        print(name)
+        raw_name = name.split('.')
+        raw_name = raw_name[0]
+        url = fs.url(name)
+        img_path_raw="D:/fishrecognition/fishrecognition"+ str(url)
+
+    img = cv2.imread(img_path_raw)
+    #rgb
+    rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    rgb_url = "D:/fishrecognition/fishrecognition/media/datasets/rgb_"+raw_name+".png"
+    cv2.imwrite(rgb_url,rgb)
+    gray = cv2.cvtColor(rgb, cv2.COLOR_BGR2GRAY)
+    # Canny
+    canny = cv2.Canny(gray, 50, 50)
+    canny = cv2.bitwise_not(canny)
+    canny_url = "D:/fishrecognition/fishrecognition/media/datasets/canny_"+raw_name+".png"
+    cv2.imwrite(canny_url,canny)
+    #blending image
+    canny = cv2.imread(canny_url)
+    blending = cv2.addWeighted(canny, 0.2, rgb, 0.6, 0)
+    blending_url = "D:/fishrecognition/fishrecognition/media/datasets/blending_"+raw_name+".png"
+    cv2.imwrite(blending_url,blending)
+
+    obj = Datasets()
+    obj.fishinput = str(url)
+    obj.rgb = "/media/datasets/rgb_"+raw_name+".png"
+    obj.canny ="/media/datasets/canny_"+raw_name+".png"
+    obj.blending= "/media/datasets/blending_"+raw_name+".png"
+    obj.save()
+
+    obj = Datasets.objects.latest('id')
+    context ={
+        'id':obj.id,
+        'fishinput':obj.fishinput,
+        'rgb':obj.rgb,
+        'canny':obj.canny,
+        'blending':obj.blending,
+    }
+
+    return render(request,'datasets.html',context)
+
+def preprocessing(request):
+    obj=Histories.objects.latest('id')
+    context ={
+        'id':obj.id,
+        'fishinput':obj.fishinput,
+        'cropped':obj.cropped,
+        'removebg':obj.removebg,
+        'transparentbg':obj.transparentbg,
+        'resize':obj.resize,
+        'fishoutput':obj.fishoutput
+    }
+
+    return render(request,'preprocessing.html',context)
+
 def tes(url):
     
     trained_model = load_model('D:/FIXTA/FishRecognitionVGG19data50.h5')
@@ -254,7 +348,6 @@ def tes(url):
     hasil = ''
     species = ''
     percentage = ''
-    post = Histories()
     for i in range(len(classes)):
         if result[0][i] * 100 > k:
             if i == 0:
@@ -272,10 +365,63 @@ def tes(url):
     else:
         return (species,percentage)
 
-# class HistoriesView(viewsets.ModelViewSet):
-#     queryset = Histories.objects.all()
-#     serializer_class = HistoriesSerializer
+def convo(request):
+    if request.method == 'POST':
+        image_path = request.POST['image_path']
+        # index = int(request.POST['layer'])
 
-# class FishesView(viewsets.ModelViewSet):
-#     queryset = Fishes.objects.all()
-#     serializer_class = FishesSerializer
+        trained_model = load_model('D:/FIXTA/FishRecognitionVGG19data50.h5')
+        img = image.load_img(image_path, target_size=(100, 250))
+        test_image = image.img_to_array(img)
+        test_image = np.expand_dims(test_image, axis = 0)
+        test_image /= 255.
+
+        layer_outputs = [layer.output for layer in trained_model.layers[:17] if not layer.name.startswith('input')]
+        # Extracts the outputs of the top 12 layers
+        activation_model = models.Model(inputs=trained_model.input, outputs=layer_outputs) # Creates a model that will return these outputs, given the model input
+        activations = activation_model.predict(test_image) 
+
+        layer_names = []
+        for layer in trained_model.layers[0:17]:
+            layer_names.append(layer.name) # Names of the layers, so you can have them as part of your plot
+            
+        images_per_row = 8
+        for layer_name, layer_activation in zip(layer_names, activations): # Displays the feature maps
+            n_features = layer_activation.shape[-1] # Number of features in the feature map
+        #     print(n_features)
+            height = layer_activation.shape[1] #The feature map has shape (1, size, size, n_features).
+            width = layer_activation.shape[2]
+        #     print(str(height)+','+str(width))
+            n_cols = n_features // images_per_row # Tiles the activation channels in this matrix
+            display_grid = np.zeros((height * n_cols, images_per_row * width))
+            for col in range(n_cols): # Tiles each filter into a big horizontal grid
+                for row in range(images_per_row):
+                    channel_image = layer_activation[0,:, :,col * images_per_row + row]
+                    channel_image -= channel_image.mean() # Post-processes the feature to make it visually palatable
+                    channel_image /= channel_image.std()
+                    channel_image *= 64
+                    channel_image += 128
+                    channel_image = np.clip(channel_image, 0, 255).astype('uint8')
+        #             size = (col + 1) * height
+        #             print(size)
+                    display_grid[col * height : (col + 1) * height, row * width : (row + 1) * width] = channel_image
+            scale = 1. / height
+            plt.figure(figsize=(scale * display_grid.shape[1],
+                                scale * display_grid.shape[0]))
+            plt.title(layer_name)
+            plt.grid(False)
+            plt.imshow(display_grid, aspect='auto', cmap='viridis')
+            plt.savefig('D:/fishrecognition/fishrecognition/media/convo/'+layer_name+'.png')
+    
+        return render(request,'convo.html')
+    else:
+        return render(request,'convo.html')
+
+
+class HistoriesView(viewsets.ModelViewSet):
+    queryset = Histories.objects.all()
+    serializer_class = HistoriesSerializer
+
+class FishesView(viewsets.ModelViewSet):
+    queryset = Fishes.objects.all()
+    serializer_class = FishesSerializer

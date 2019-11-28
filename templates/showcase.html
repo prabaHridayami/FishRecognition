@@ -131,10 +131,10 @@
           <i class="fal fa-fish fa-3x"></i>
           <h1>Fish Input</h1>
           <hr>
-          <div id="img-preview" class="column is-12" style=" margin:auto; height:110px; border: 2px dashed #000;">
+          <div id="img-preview" class="column is-12" style=" margin:auto; border: 2px dashed #000;">
             <h2 id="inputText">Image Here...</h2>
             <img id="inputImage" src="/media/1.png" name="inputImage"
-              style=" margin:auto; width:250px; height:100px; display:none;" />
+              style=" margin:auto; display:none;" />
           </div>
           <br>
           <form action="coba" method="post" enctype="multipart/form-data">
@@ -152,7 +152,7 @@
           <i class="far fa-poll-h fa-3x"></i>
           <h1>Result</h1>
           <hr />
-          <h1>{{species}}</h1>
+          <h1>{{species}} : {{percentage}}%</h1>
           <progress class="progress" value="{{percentage}}" max="100"></progress>
         </div>
 
